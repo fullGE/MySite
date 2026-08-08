@@ -424,8 +424,8 @@
 
   input.addEventListener("input", () => {
     const len = input.value.length;
-    charCount.textContent = `${len}/20`;
-    charCount.classList.toggle("warn", len > 20);
+    charCount.textContent = `${len}/5000`;
+    charCount.classList.toggle("warn", len > 5000);
   });
 
   form.addEventListener("submit", async (event) => {
