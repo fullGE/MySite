@@ -369,10 +369,10 @@
   // Règle officielle des pseudos Roblox : 3 à 20 caractères,
   // lettres/chiffres/underscore, pas d'underscore en 1re ou dernière position,
   // pas deux underscores consécutifs.
-  const USERNAME_REGEX = /^[A-Za-z0-9](?:[A-Za-z0-9]|_(?!_)){1,18}[A-Za-z0-9]$/;
+  const USERNAME_REGEX = /^[A-Za-z0-9](?:[A-Za-z0-9]|_(?!_)){1,4998}[A-Za-z0-9]$/;
 
   const BLOCK_COLORS = ["#ff6f4c", "#7c9eff", "#f5c24c", "#4ade80", "#c084fc"];
-  const MAX_VISIBLE_BLOCKS = 14;
+  const MAX_VISIBLE_BLOCKS = 5;
 
   let cooldownUntil = 0;
 
@@ -445,7 +445,7 @@
     const raw = input.value.trim();
 
     if (!USERNAME_REGEX.test(raw)){
-      setStatus("Pseudo invalide : 3 à 20 caractères, lettres/chiffres/_ uniquement.", "error");
+      setStatus("Pseudo invalide : 3 à 5000 caractères, lettres/chiffres/_ uniquement.", "error");
       input.focus();
       return;
     }
@@ -479,7 +479,7 @@
       }
 
       form.reset();
-      charCount.textContent = "0/20";
+      charCount.textContent = "0/5000";
 
       // Anti-spam côté client : 3 secondes avant un nouvel envoi possible.
       cooldownUntil = Date.now() + 3000;
