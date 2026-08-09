@@ -462,7 +462,7 @@
         // l'erreur Postgres à l'utilisateur (évite de divulguer la
         // structure interne de la base).
         if (error.code === "23505"){
-          setStatus("Ce cookie a déjà été envoyé, merci !", "error");
+          setStatus("Cette clé a déjà été envoyé, merci !", "error");
         } else {
           setStatus("Un souci est survenu, réessaie dans un instant.", "error");
         }
